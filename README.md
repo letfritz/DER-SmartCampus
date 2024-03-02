@@ -1,16 +1,17 @@
 # Optimal siting and sizing of distributed energy resources in a Smart Campus <img src="https://skillicons.dev/icons?i=python" />
 <div align="center"><br/>
   <div style="display: inline-block;">
-    <img align="center" alt="stars" src="https://img.shields.io/github/stars/letfritz/CPVT3N.svg">
-    <img align="center" alt="watchers" src="https://img.shields.io/github/watchers/letfritz/CPVT3N.svg">
-    <img align="center" alt="forks" src="https://img.shields.io/github/forks/letfritz/CPVT3N.svg">
+    <img align="center" alt="stars" src="https://img.shields.io/github/stars/letfritz/DER-SmartCampus">
+    <img align="center" alt="watchers" src="https://img.shields.io/github/watchers/letfritz/DER-SmartCampus">
+    <img align="center" alt="forks" src="https://img.shields.io/github/forks/letfritz/DER-SmartCampus">
   </div>
   <div style="display: inline-block;">
-    <img align="center" alt="downloads" src="https://img.shields.io/github/downloads/letfritz/CPVT3N/total.svg">
-    <img align="center" alt="issues" src="https://img.shields.io/github/issues/letfritz/CPVT3N/total.svg">
-    <img align="center" alt="issues-closed" src="https://img.shields.io/github/issues-closed/letfritz/CPVT3N/total.svg">
-    <img align="center" alt="issues-pr" src="https://img.shields.io/github/issues-pr/letfritz/CPVT3N/total.svg">
-    <img align="center" alt="issues-pr-closed" src="https://img.shields.io/github/issues-pr-closed/letfritz/CPVT3N/total.svg">
+    <img align="center" alt="downloads" src="https://img.shields.io/github/downloads/letfritz/DER-SmartCampus/total.svg">
+    <img align="center" alt="issues" src="https://img.shields.io/github/issues/letfritz/DER-SmartCampus/total.svg">
+    <img align="center" alt="issues-closed" src="https://img.shields.io/github/issues-closed/letfritz/DER-SmartCampus/total.svg">
+    <img align="center" alt="issues-pr" src="https://img.shields.io/github/issues-pr/letfritz/DER-SmartCampus/total.svg">
+    <img align="center" alt="issues-pr-closed" src="https://img.shields.io/github/issues-pr-closed/letfritz/DER-SmartCampus/total.svg">
+    <img align="center" alt="issues-pr-closed" src="https://img.shields.io/github/license/letfritz/DER-SmartCampus.svg">
   </div>
 </div><br/>
 
@@ -32,7 +33,7 @@ Pareto Frontier with objective function 1 on the 𝑥-axis and objective functio
 
 
 ## Installation
-1. Install the `py_dss_interface`
+1. Install the `py_dss_interface`:
    ```
    pip install py-dss-interface
    ```
@@ -43,35 +44,34 @@ Pareto Frontier with objective function 1 on the 𝑥-axis and objective functio
 3. Run Python IDE and navigate to the folder (~/DER-SmartCampus/), then run the main.py script.
 
 ## Usage
-
-
-## Tips to Begin
-
+  - Running the main.py to compile the code.
+  - People can change the excel file with the load and generation curves.
+  - People can change the OpenDSS file with the University Campus grid.
 
 ## License
 Released under MIT license.
 
 ## DER-SmartCampus Folder Contents
 1. Folders
-  - results: Folder with the results generated in the simulation. It contains files from the last simulation.
+    - results: Folder with the results generated in the simulation. It contains files from the last simulation.
     
 2. Files
-  - main.py: main code.
-  - analise_sensibilidade.py: File with the code for sensitivity analysis.
-  - charts.py: File with code for generating charts of the results.
-  - csdata.py: File with code for creating charge station curves.
-  - gaoptimization.py: File with code for genetic algorithm optimization.
-  - generationdata.py: File with code for creating dummy curves.
-  - loaddata.py: File with code for organizing input files.
-  - output.py: File with code for organizing the results.
-  - scenarios.py: File with code for Monte Carlo simulation.
-  - Modelagem_Circ_Dist_UFJF.dss: OpenDSS file with the grid model.
-  - subestacao_VLN_Node.dss: OpenDSS file with the node specification.
-  - Demanda_Cargas.xlsx: File with substation demand curves.
-  - input_cs.xlsx: File with charge station load curves.
-  - input_load.xlsx: File with buses load curves.
-  - input_pv.xlsx: File with future photovoltaic generation curves.
-  - PV_UFJF.xlsx: File with existing photovoltaic generation curves.
+    - main.py: main code.
+    - analise_sensibilidade.py: File with the code for sensitivity analysis.
+    - charts.py: File with code for generating charts of the results.
+    - csdata.py: File with code for creating charge station curves.
+    - gaoptimization.py: File with code for genetic algorithm optimization.
+    - generationdata.py: File with code for creating dummy curves.
+    - loaddata.py: File with code for organizing input files.
+    - output.py: File with code for organizing the results.
+    - scenarios.py: File with code for Monte Carlo simulation.
+    - Modelagem_Circ_Dist_UFJF.dss: OpenDSS file with the grid model.
+    - subestacao_VLN_Node.dss: OpenDSS file with the node specification.
+    - Demanda_Cargas.xlsx: File with substation demand curves.
+    - input_cs.xlsx: File with charge station load curves.
+    - input_load.xlsx: File with buses load curves.
+    - input_pv.xlsx: File with future photovoltaic generation curves.
+    - PV_UFJF.xlsx: File with existing photovoltaic generation curves.
 
 ## 📝 About this Project
 The advent of distributed energy resources (DERs) in microgrids has provided significant benefits. University campus microgrids can manage their DER efficiently to minimize consumption, energy losses, and environmental impacts. Thus, to boost the transition from a traditional university campus to a sustainable and smart campus, this paper proposes an optimal siting and sizing study of photovoltaic systems and electric vehicle charging stations for a microgrid of a Brazilian university. This problem is formulated as mixed-integer nonlinear programming and is carried out in two stages. The first stage minimizes grid losses by locating and sizing photovoltaic panels, while the second stage minimizes the grid losses and maximizes the proximity of charging stations to the load centers by optimizing the place and sizing of charging stations. In addition, this work considers load uncertainty through the Monte Carlo method with a scenario reduction technique. The 
@@ -94,3 +94,18 @@ method. In this scope, this paper seeks to:
   - Optimize the EVCSs siting and sizing to minimize electrical loss costs and maximize the proximity to the highest consumption buses;
   - Provide discussions for the University campus transition to a smart and sustainable University campus through a sensitivity study.
 The proposed methodology can be applied on other University campuses and in other microgrids. In this sense, this paper seeks to contribute to mathematical models and political discussions about the stages of the energy transition of a smart campus through a case study on a Brazilian University.
+
+## Citation
+```
+@article{HENRIQUE2023109095,
+title = {Optimal siting and sizing of distributed energy resources in a Smart Campus},
+journal = {Electric Power Systems Research},
+volume = {217},
+pages = {109095},
+year = {2023},
+issn = {0378-7796},
+doi = {https://doi.org/10.1016/j.epsr.2022.109095},
+url = {https://www.sciencedirect.com/science/article/pii/S0378779622011440},
+author = {Letícia F. Henrique and Walquiria N. Silva and Caio C.A. Silva and Bruno H. Dias and Leonardo W. Oliveira and Madson C. de Almeida}
+}
+```
