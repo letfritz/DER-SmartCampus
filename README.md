@@ -53,9 +53,25 @@ Released under MIT license.
 
 ## DER-SmartCampus Folder Contents
 1. Folders
-  
-2. Files
+  - results: Folder with the results generated in the simulation. It contains files from the last simulation.
     
+2. Files
+  - main.py: main code.
+  - analise_sensibilidade.py: File with the code for sensitivity analysis.
+  - charts.py: File with code for generating charts of the results.
+  - csdata.py: File with code for creating charge station curves.
+  - gaoptimization.py: File with code for genetic algorithm optimization.
+  - generationdata.py: File with code for creating dummy curves.
+  - loaddata.py: File with code for organizing input files.
+  - output.py: File with code for organizing the results.
+  - scenarios.py: File with code for Monte Carlo simulation.
+  - Modelagem_Circ_Dist_UFJF.dss: OpenDSS file with the grid model.
+  - subestacao_VLN_Node.dss: OpenDSS file with the node specification.
+  - Demanda_Cargas.xlsx: File with substation demand curves.
+  - input_cs.xlsx: File with charge station load curves.
+  - input_load.xlsx: File with buses load curves.
+  - input_pv.xlsx: File with future photovoltaic generation curves.
+  - PV_UFJF.xlsx: File with existing photovoltaic generation curves.
 
 ## 📝 About this Project
 The advent of distributed energy resources (DERs) in microgrids has provided significant benefits. University campus microgrids can manage their DER efficiently to minimize consumption, energy losses, and environmental impacts. Thus, to boost the transition from a traditional university campus to a sustainable and smart campus, this paper proposes an optimal siting and sizing study of photovoltaic systems and electric vehicle charging stations for a microgrid of a Brazilian university. This problem is formulated as mixed-integer nonlinear programming and is carried out in two stages. The first stage minimizes grid losses by locating and sizing photovoltaic panels, while the second stage minimizes the grid losses and maximizes the proximity of charging stations to the load centers by optimizing the place and sizing of charging stations. In addition, this work considers load uncertainty through the Monte Carlo method with a scenario reduction technique. The 
