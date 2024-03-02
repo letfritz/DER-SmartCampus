@@ -1,0 +1,509 @@
+! ----------------------------------------------------------------------------------------------------------------------------
+! ------------------------ UNIVERSIDADE FEDERAL DE JUIZ DE FORA --------------------------------
+! ----------------------------------------------------------------------------------------------------------------------------
+! -------------------------- FACULDADE DE ENGENHARIA ELÉTRICA -----------------------------------
+! ----------------------------------------------------------------------------------------------------------------------------
+! ------------------------------------------- MODELAGEM  ----------------------------------------------------------
+! ----------------------------------------------------------------------------------------------------------------------------
+
+! Objetivo: Este código tem por objetivo modelar o circuito de Distribuição da UFJF
+
+! Limpando a memória do OpenDSS
+Clear
+
+
+!MODELAGEM DO CIRCUITO
+ 
+!TENSÃO DE ENTRADA DA SUBESTAÇÃO - EQUIVALENTE DE THEVENIN
+New circuit.subestacao basekV=23.1  pu=1.0 angle=0 frequency=60 phases=3
+Set defaultBaseFrequency=60
+ 
+ 
+!MODELAGEM DOS CONDUTORES
+New LineCode.2AWG_50    nphases=3    r1=0.8541   x1=0.4167   c1=0   r0=0.8541   x0=0.4167   c0=0   units=km  
+New LineCode.2AWG_35    nphases=3    r1=1.3545   x1=0.4495   c1=0   r0=1.3545   x0=0.4495   c0=0   units=km  
+ 
+ 
+!MODELAGEM DOS TRAFOS DA SUBESTAÇÃO
+New transformer.Trafo3F_Subestacao1     phases=3      windings=2      buses=[Sourcebus.1.2.3  busT1.1.2.3]                conns=[delta   wye]      KVs=[23.1   6.6]      KVAs=[1500  1500]
+ 
+New transformer.Trafo3F_Subestacao2     phases=3      windings=2      buses=[Sourcebus.1.2.3  busT2.1.2.3]                conns=[delta   wye]      KVs=[23.1   6.6]      KVAs=[1500  1500]
+ 
+New transformer.Trafo3F_Subestacao3     phases=3      windings=2      buses=[Sourcebus.1.2.3  busCarga_REITORIA.1.2.3]    conns=[delta   wye]      KVs=[23.1   0.22]     KVAs=[300  300]
+ 
+ 
+ 
+!----------------------------------------------------------------------------------
+!-------------------------------- CIRCUITO 1 ------------------------------
+!----------------------------------------------------------------------------------
+ 
+ 
+!DEFININDO AS LINHAS DE MT AÉREAS DO CIRCUITO 1
+New line.3F_MT_T1/1.C1       bus1= busT1.1.2.3         bus2= bus1_C1.1.2.3        Linecode=2AWG_50       length=8   units=m
+New line.3F_MT_1.C1/2.C1     bus1= bus1_C1.1.2.3       bus2= bus2_C1.1.2.3        Linecode=2AWG_50       length=6   units=m
+New line.3F_MT_2.C1/3.C1     bus1= bus2_C1.1.2.3       bus2= bus3_C1.1.2.3        Linecode=2AWG_50       length=18  units=m
+New line.3F_MT_3.C1/4.C1     bus1= bus3_C1.1.2.3       bus2= bus4_C1.1.2.3        Linecode=2AWG_50       length=31  units=m
+New line.3F_MT_4.C1/5.C1     bus1= bus4_C1.1.2.3       bus2= bus5_C1.1.2.3        Linecode=2AWG_50       length=30  units=m
+New line.3F_MT_5.C1/6.C1     bus1= bus5_C1.1.2.3       bus2= bus6_C1.1.2.3        Linecode=2AWG_50       length=29  units=m
+ 
+ 
+!LINHA SUBTERRÂNEA PORTÃO NORTE DO CIRCUITO 1
+New line.3F_MT_6.C1/7.C1     bus1= bus6_C1.1.2.3         bus2=bus7_C1.1.2.3        Linecode=2AWG_50        length=45  units=m
+ 
+ 
+!DEFININDO AS LINHAS DE MT AÉREAS DO CIRCUITO 1
+New line.3F_MT_7.C1/8.C1     bus1= bus7_C1.1.2.3         bus2=bus8_C1.1.2.3        Linecode=2AWG_50       length=32  units=m
+New line.3F_MT_8.C1/9.C1     bus1= bus8_C1.1.2.3         bus2=bus9_C1.1.2.3        Linecode=2AWG_50       length=64  units=m
+ 
+ 
+ 
+!O BARRAMENTO 9 ALIMENTA TODA A PLATAFORMA DO ICB, PLATAFORMA DO ICH ANTIGO
+!FACULDADE DE LETRAS, FARMÁCIA UNIVERSITÁRIA E ESCOLA
+ 
+!LINHA SUBTERRÂNEA DO ICB
+New line.3F_MT_9.C1/Trafo_3F_ICB     bus1= bus9_C1.1.2.3         bus2=Sourcebus_ICB.1.2.3        Linecode = 2AWG_50        length=100  units=m
+!TRAFO DO ICB
+New transformer.Trafo3F_ICB     phases=3      windings=2        buses=[Sourcebus_ICB.1.2.3  busCarga_ICB.1.2.3]      conns=[delta   wye]      KVs=[6.6   0.22]      KVAs=[500  500]
+
+ 
+ 
+ 
+!DEFININDO AS LINHAS DE MT AÉREAS DO CIRCUITO 1
+New line.3F_MT_9.C1/10.C1    bus1= bus9_C1.1.2.3         bus2=bus10_C1.1.2.3       Linecode=2AWG_50       length=50  units=m
+New line.3F_MT_10.C1/11.C1   bus1= bus10_C1.1.2.3        bus2=bus11_C1.1.2.3       Linecode=2AWG_50       length=28  units=m
+New line.3F_MT_11.C1/12.C1   bus1= bus11_C1.1.2.3        bus2=bus12_C1.1.2.3       Linecode=2AWG_50       length=36  units=m
+ 
+ 
+ 
+!O BARRAMENTO 12 ALIMENTA O CGCO 1 E CGCO2
+ 
+!LINHA SUBTERRÂNEA DO CGCO1 E CGCO2
+New line.3F_MT_12.C1/Trafo_3F_CGCO1e2     bus1= bus12_C1.1.2.3         bus2=Sourcebus_CGCO.1.2.3        Linecode = 2AWG_35        length=120  units=m
+!TRAFO DO CGCO 1
+New transformer.Trafo3F_CGCO1     phases=3      windings=2        buses=[Sourcebus_CGCO.1.2.3  Secundario_CGCO1.1.2.3]      conns=[delta   wye]      KVs=[6.6   0.22]      KVAs=[500  500]
+!TRAFO DO CGCO 2
+New transformer.Trafo3F_CGCO2     phases=3      windings=2        buses=[Sourcebus_CGCO.1.2.3  busCarga_CGCO2.1.2.3]      conns=[delta   wye]      KVs=[6.6   0.22]      KVAs=[225  225]
+
+ 
+ 
+!LINHA ENTRE O TRAFO DO CGCO1 E A CARGA
+New line.3F_BT_Trafo3F_CGCO1/Carga_CGCO1   bus1= Secundario_CGCO1.1.2.3        bus2=busCarga_CGCO1.1.2.3       Linecode=2AWG_50       length=0.0001    units=m
+ 
+ 
+!DEFININDO AS LINHAS DE MT AÉREAS DO CIRCUITO 1
+New line.3F_MT_12.C1/13.C1   bus1= bus12_C1.1.2.3        bus2=bus13_C1.1.2.3       Linecode=2AWG_50       length=38    units=m
+New line.3F_MT_13.C1/14.C1   bus1= bus13_C1.1.2.3        bus2=bus14_C1.1.2.3       Linecode=2AWG_50       length=38    units=m
+New line.3F_MT_14.C1/15.C1   bus1= bus14_C1.1.2.3        bus2=bus15_C1.1.2.3       Linecode=2AWG_50       length=15    units=m
+ 
+ 
+!O BARRAMENTO 15 ALIMENTA A FÍSICA/ QUÍMICA E ENGENHARIA COMPUTACIONAL
+ 
+!TRAFO DA ENGENHARIA COMPUTACIONAL
+New transformer.Trafo3F_EComputacao     phases=3      windings=2        buses=[bus15_C1.1.2.3  busCarga_EComputacao.1.2.3]      conns=[delta   wye]      KVs=[6.6   0.22]      KVAs=[300  300]
+
+ 
+ 
+!DEFININDO AS LINHAS DE MT AÉREAS DO CIRCUITO 1
+New line.3F_MT_15.C1/16.C1   bus1= bus15_C1.1.2.3        bus2=bus16_C1.1.2.3       Linecode=2AWG_50       length=40    units=m
+New line.3F_MT_16.C1/17.C1   bus1= bus16_C1.1.2.3        bus2=bus17_C1.1.2.3       Linecode=2AWG_50       length=32    units=m
+New line.3F_MT_17.C1/18.C1   bus1= bus17_C1.1.2.3        bus2=bus18_C1.1.2.3       Linecode=2AWG_50       length=28    units=m
+ 
+ 
+ 
+!O BARRAMENTO 18 ALIMENTA A MODELAGEM COMPUTACIONAL
+ 
+!TRAFO DA MODELAGEM COMPUTACIONAL
+New transformer.Trafo3F_ModelagemCom     phases=3      windings=2        buses=[bus18_C1.1.2.3  busCarga_ModelagemCom.1.2.3]      conns=[delta   wye]      KVs=[6.6   0.22]      KVAs=[150  150]
+
+ 
+ 
+New line.3F_MT_18.C1/19.C1   bus1= bus18_C1.1.2.3        bus2=bus19_C1.1.2.3       Linecode=2AWG_50       length=40  units=m
+New line.3F_MT_19.C1/20.C1   bus1= bus19_C1.1.2.3        bus2=bus20_C1.1.2.3       Linecode=2AWG_50       length=36  units=m
+New line.3F_MT_20.C1/21.C1   bus1= bus20_C1.1.2.3        bus2=bus21_C1.1.2.3       Linecode=2AWG_50       length=36  units=m
+New line.3F_MT_21.C1/22.C1   bus1= bus21_C1.1.2.3        bus2=bus22_C1.1.2.3       Linecode=2AWG_50       length=35  units=m
+ 
+ 
+ 
+!O BARRAMENTO 22 ALIMENTA OS BLOCOS ANTIGOS DA ENGENHARIA.
+!BLOCOS(A,B,C,D,E,F,G,H,I,J) E O PRÉDIO DA ARQUITETURA BL.K
+ 
+!LINHA SUBTERRÂNEA DA ENGENHARIA
+New line.3F_MT_22.C1/Trafo_3F_Engenharia     bus1= bus22_C1.1.2.3         bus2=Sourcebus_Engenharia.1.2.3        Linecode = 2AWG_35        length=80  units=m
+!TRAFO ENGENHARIA
+New transformer.Trafo3F_Engenharia     phases=3      windings=2        buses=[Sourcebus_Engenharia.1.2.3  Secundario_ENGENHARIA.1.2.3]      conns=[delta   wye]      KVs=[6.6   0.22]      KVAs=[500  500]
+
+ 
+!LINHA ENTRE O TRAFO DA ENGENHARIA E A CARGA
+New line.3F_BT_Trafo3F_ENGENHARIA/Carga_ENGENHARIA   bus1= Secundario_ENGENHARIA.1.2.3        bus2=busCarga_Engenharia.1.2.3       Linecode=2AWG_50       length=0.0001    units=m
+ 
+ 
+ 
+!DEFININDO AS LINHAS DE MT AÉREAS DO CIRCUITO 1
+New line.3F_MT_22.C1/23.C1     bus1= bus22_C1.1.2.3         bus2=bus23_C1.1.2.3        Linecode=2AWG_50       length=30  units=m
+New line.3F_MT_23.C1/24.C1     bus1= bus23_C1.1.2.3         bus2=bus24_C1.1.2.3        Linecode=2AWG_50       length=32  units=m
+ 
+ 
+ 
+!O BARRAMENTO 24 ALIMENTA O RESTAURANTE UNIVERSITÁRIO. BLOBOS(L,L1)
+ 
+!LINHA SUBTERRÂNEA DO RESTAURANTE UNIVERSITÁRIO
+New line.3F_MT_24.C1/Trafo_3F_RU     bus1= bus24_C1.1.2.3         bus2=Sourcebus_RU.1.2.3        Linecode = 2AWG_35        length=52  units=m
+!TRAFO DO RESTAURANTE UNIVERSITÁRIO
+New transformer.Trafo3F_RU     phases=3      windings=2        buses=[Sourcebus_RU.1.2.3  busCarga_RU.1.2.3]      conns=[delta   wye]      KVs=[6.6   0.22]      KVAs=[300  300]
+
+ 
+ 
+ 
+!DEFININDO AS LINHAS DE MT AÉREAS DO CIRCUITO 1
+New line.3F_MT_24.C1/25.C1     bus1= bus24_C1.1.2.3         bus2=bus25_C1.1.2.3        Linecode=2AWG_50       length=32  units=m
+ 
+ 
+ 
+!O BARRAMENTO 25 ALIMENTA A NOVA BIBLIOTECA DO ICE/ENG. E O CBR
+ 
+ 
+!LINHA SUBTERRÂNEA DA BIBLIOTECA
+New line.3F_MT_bus25.C1/Trafo_3F_Biblioteca     bus1= bus25_C1.1.2.3         bus2=Sourcebus_Biblioteca.1.2.3        Linecode = 2AWG_35        length=170  units=m
+!TRAFO DA BIBLIOTECA
+New transformer.Trafo3F_Biblioteca    phases=3      windings=2        buses=[Sourcebus_Biblioteca.1.2.3  busCarga_Biblioteca.1.2.3]      conns=[delta   wye]      KVs=[6.6   0.22]      KVAs=[225  225]
+
+ 
+ 
+!LINHA SUBTERRÂNEA DO CBR
+New line.3F_MT_Sourcebus_Biblioteca/Trafo_3F_CBR     bus1= Sourcebus_Biblioteca.1.2.3         bus2=Sourcebus_CBR.1.2.3        Linecode = 2AWG_35        length=140  units=m
+!TRAFO DO CBR
+New transformer.Trafo3F_CBR    phases=3      windings=2        buses=[Sourcebus_CBR.1.2.3  busCarga_CBR.1.2.3]      conns=[delta   wye]      KVs=[6.6   0.22]      KVAs=[300  300]
+
+ 
+ 
+ 
+!DEFININDO AS LINHAS DE MT AÉREAS DO CIRCUITO 1
+New line.3F_MT_25.C1/26.C1     bus1= bus25_C1.1.2.3         bus2=bus26_C1.1.2.3        Linecode=2AWG_50       length=33  units=m
+ 
+ 
+ 
+!A USINA FOTOVOLTAICA É UMA FONTE GERADORA CONECTADA NA REDE DE MT DA UFJF
+!A USINA FOTOVOLTAICA ESTÁ CONECTADA NO BARRAMENTO 26
+ 
+!TRAFO DA USINA FOTOVOLTAICA 
+New transformer.Trafo3F_UsinaEng    phases=3      windings=2        buses=[bus26_C1.1.2.3  busGerador_Engenharia.1.2.3]      conns=[delta   wye]      KVs=[6.6   0.22]      KVAs=[45  45]
+
+ 
+ 
+ 
+!DEFININDO AS LINHAS DE MT AÉREAS DO CIRCUITO 1
+New line.3F_MT_26.C1/27.C1     bus1= bus26_C1.1.2.3         bus2=bus27_C1.1.2.3        Linecode=2AWG_50       length=26  units=m
+New line.3F_MT_27.C1/28.C1     bus1= bus27_C1.1.2.3         bus2=bus28_C1.1.2.3        Linecode=2AWG_50       length=28  units=m
+ 
+ 
+ 
+!O BARRAMENTO 28 ALIMENTA O IAD E O PRÉDIO ITAMAR FRANCO
+ 
+!TRAFO DO IAD
+New transformer.Trafo3F_IAD    phases=3      windings=2        buses=[bus28_C1.1.2.3  busCarga_IAD.1.2.3]      conns=[delta   wye]      KVs=[6.6   0.22]      KVAs=[300  300]
+
+ 
+ 
+ 
+!DEFININDO AS LINHAS DE MT AÉREAS DO CIRCUITO 1
+New line.3F_MT_28.C1/29.C1     bus1= bus28_C1.1.2.3         bus2=bus29_C1.1.2.3        Linecode=2AWG_50       length=25  units=m
+New line.3F_MT_29.C1/30.C1     bus1= bus29_C1.1.2.3         bus2=bus30_C1.1.2.3        Linecode=2AWG_50       length=22  units=m
+New line.3F_MT_30.C1/31.C1     bus1= bus30_C1.1.2.3         bus2=bus31_C1.1.2.3        Linecode=2AWG_50       length=25  units=m
+New line.3F_MT_31.C1/32.C1     bus1= bus31_C1.1.2.3         bus2=bus32_C1.1.2.3        Linecode=2AWG_50       length=15  units=m
+New line.3F_MT_32.C1/33.C1     bus1= bus32_C1.1.2.3         bus2=bus33_C1.1.2.3        Linecode=2AWG_50       length=35  units=m
+ 
+ 
+ 
+!O BARRAMENTO 33 ALIMENTA O CRITT, NEAD E A GRÁFICA
+ 
+!TRAFO DO CRITT
+New transformer.Trafo3F_CRITT    phases=3      windings=2        buses=[bus33_C1.1.2.3  busCarga_CRITT.1.2.3]      conns=[delta   wye]      KVs=[6.6   0.22]      KVAs=[300  300]
+
+ 
+ 
+ 
+!DEFININDO AS LINHAS DE MT AÉREAS DO CIRCUITO 1
+New line.3F_MT_29.C1/34.C1     bus1= bus29_C1.1.2.3         bus2=bus34_C1.1.2.3        Linecode=2AWG_50       length=15  units=m
+New line.3F_MT_34.C1/35.C1     bus1= bus34_C1.1.2.3         bus2=bus35_C1.1.2.3        Linecode=2AWG_50       length=42  units=m
+New line.3F_MT_35.C1/36.C1     bus1= bus35_C1.1.2.3         bus2=bus36_C1.1.2.3        Linecode=2AWG_50       length=20  units=m
+New line.3F_MT_36.C1/37.C1     bus1= bus36_C1.1.2.3         bus2=bus37_C1.1.2.3        Linecode=2AWG_50       length=32  units=m
+New line.3F_MT_37.C1/38.C1     bus1= bus37_C1.1.2.3         bus2=bus38_C1.1.2.3        Linecode=2AWG_50       length=32  units=m
+New line.3F_MT_38.C1/39.C1     bus1= bus38_C1.1.2.3         bus2=bus39_C1.1.2.3        Linecode=2AWG_50       length=32  units=m
+New line.3F_MT_39.C1/40.C1     bus1= bus39_C1.1.2.3         bus2=bus40_C1.1.2.3        Linecode=2AWG_50       length=32  units=m
+New line.3F_MT_40.C1/41.C1     bus1= bus40_C1.1.2.3         bus2=bus41_C1.1.2.3        Linecode=2AWG_50       length=32  units=m
+New line.3F_MT_41.C1/42.C1     bus1= bus41_C1.1.2.3         bus2=bus42_C1.1.2.3        Linecode=2AWG_50       length=32  units=m
+New line.3F_MT_42.C1/43.C1     bus1= bus42_C1.1.2.3         bus2=bus43_C1.1.2.3        Linecode=2AWG_50       length=45  units=m
+New line.3F_MT_43.C1/44.C1     bus1= bus43_C1.1.2.3         bus2=bus44_C1.1.2.3        Linecode=2AWG_50       length=50  units=m
+New line.3F_MT_44.C1/45.C1     bus1= bus44_C1.1.2.3         bus2=bus45_C1.1.2.3        Linecode=2AWG_50       length=50  units=m
+New line.3F_MT_45.C1/46.C1     bus1= bus45_C1.1.2.3         bus2=bus46_C1.1.2.3        Linecode=2AWG_50       length=50  units=m
+New line.3F_MT_46.C1/47.C1     bus1= bus46_C1.1.2.3         bus2=bus47_C1.1.2.3        Linecode=2AWG_50       length=60  units=m
+New line.3F_MT_47.C1/48.C1     bus1= bus47_C1.1.2.3         bus2=bus48_C1.1.2.3        Linecode=2AWG_50       length=65  units=m
+New line.3F_MT_48.C1/49.C1     bus1= bus48_C1.1.2.3         bus2=bus49_C1.1.2.3        Linecode=2AWG_50       length=60  units=m
+New line.3F_MT_49.C1/50.C1     bus1= bus49_C1.1.2.3         bus2=bus50_C1.1.2.3        Linecode=2AWG_50       length=68  units=m
+New line.3F_MT_50.C1/51.C1     bus1= bus50_C1.1.2.3         bus2=bus51_C1.1.2.3        Linecode=2AWG_50       length=52  units=m
+New line.3F_MT_51.C1/52.C1     bus1= bus51_C1.1.2.3         bus2=bus52_C1.1.2.3        Linecode=2AWG_50       length=23  units=m
+ 
+ 
+ 
+!O BARRAMENTO 52 ALIMENTA O FAEFID 1
+ 
+!LINHA SUBTERRÂNEA DO FAEFID1
+New line.3F_MT_52.C1/Trafo_3F_FAEFID1     bus1= bus52_C1.1.2.3         bus2=Sourcebus_FAEFID1.1.2.3        Linecode = 2AWG_35        length=40  units=m
+!TRAFO DO FAEFID1
+New transformer.Trafo3F_FAEFID1    phases=3      windings=2        buses=[Sourcebus_FAEFID1.1.2.3  busCarga_FAEFID1.1.2.3]      conns=[delta   wye]      KVs=[6.6   0.22]      KVAs=[300  300]
+
+ 
+ 
+ 
+!DEFININDO AS LINHAS DE MT AÉREAS DO CIRCUITO 1
+New line.3F_MT_51.C1/53.C1     bus1= bus51_C1.1.2.3         bus2=bus53_C1.1.2.3        Linecode=2AWG_50       length=59  units=m
+ 
+ 
+ 
+!O BARRAMENTO 53 ALIMENTA O FAEFID 2
+ 
+!LINHA SUBTERRÂNEA DO FAEFID2
+New line.3F_MT_53.C1/Trafo_3F_FAEFID2     bus1= bus53_C1.1.2.3         bus2= bus54_C1.1.2.3        Linecode = 2AWG_50        length=140  units=m
+!TRAFO DO FAEFID2
+New transformer.Trafo3F_FAEFID2    phases=3      windings=2        buses=[bus54_C1.1.2.3  busCarga_FAEFID2.1.2.3]      conns=[delta   wye]      KVs=[6.6   0.22]      KVAs=[300  300]
+
+ 
+ 
+ 
+!---------------------------------------------------------------------------------
+!-------------------------------- CIRCUITO 2 ------------------------------
+!---------------------------------------------------------------------------------
+ 
+ 
+!DEFININDO AS LINHAS DE MT AÉREAS DO CIRCUITO 2
+New line.3F_MT_T2/1.C2        bus1= busT2.1.2.3          bus2= bus1_C2.1.2.3          Linecode=2AWG_50       length=12  units=m
+New line.3F_MT_1.C2/55.C2     bus1= bus1_C2.1.2.3        bus2= bus55_C2.1.2.3         Linecode=2AWG_50       length=12  units=m
+New line.3F_MT_55.C2/56.C2    bus1= bus55_C2.1.2.3       bus2= bus56_C2.1.2.3         Linecode=2AWG_50       length=7   units=m
+New line.3F_MT_56.C2/57.C2    bus1= bus56_C2.1.2.3       bus2= bus57_C2.1.2.3         Linecode=2AWG_50       length=19  units=m
+New line.3F_MT_57.C2/58.C2    bus1= bus57_C2.1.2.3       bus2= bus58_C2.1.2.3         Linecode=2AWG_50       length=17  units=m
+New line.3F_MT_58.C2/59.C2    bus1= bus58_C2.1.2.3       bus2= bus59_C2.1.2.3         Linecode=2AWG_50       length=18  units=m
+New line.3F_MT_59.C2/60.C2    bus1= bus59_C2.1.2.3       bus2= bus60_C2.1.2.3         Linecode=2AWG_50       length=32  units=m
+New line.3F_MT_60.C2/61.C2    bus1= bus60_C2.1.2.3       bus2= bus61_C2.1.2.3         Linecode=2AWG_50       length=32  units=m
+New line.3F_MT_61.C2/62.C2    bus1= bus61_C2.1.2.3       bus2= bus62_C2.1.2.3         Linecode=2AWG_50       length=32  units=m
+New line.3F_MT_62.C2/63.C2    bus1= bus62_C2.1.2.3       bus2= bus63_C2.1.2.3         Linecode=2AWG_50       length=35  units=m
+New line.3F_MT_63.C2/64.C2    bus1= bus63_C2.1.2.3       bus2= bus64_C2.1.2.3         Linecode=2AWG_50       length=32  units=m
+New line.3F_MT_64.C2/65.C2    bus1= bus64_C2.1.2.3       bus2= bus65_C2.1.2.3         Linecode=2AWG_50       length=30  units=m
+ 
+ 
+!OS BARRAMENTOS 66 E 67 ESTÃO DESATIVADOS
+ 
+ 
+!DEFININDO AS LINHAS DE MT AÉREAS DO CIRCUITO 2
+New line.3F_MT_65.C2/68.C2    bus1= bus65_C2.1.2.3       bus2= bus68_C2.1.2.3         Linecode=2AWG_50       length=35  units=m
+New line.3F_MT_68.C2/69.C2    bus1= bus68_C2.1.2.3       bus2= bus69_C2.1.2.3         Linecode=2AWG_50       length=40  units=m
+New line.3F_MT_69.C2/70.C2    bus1= bus69_C2.1.2.3       bus2= bus70_C2.1.2.3         Linecode=2AWG_50       length=37  units=m
+New line.3F_MT_70.C2/71.C2    bus1= bus70_C2.1.2.3       bus2= bus71_C2.1.2.3         Linecode=2AWG_50       length=34  units=m
+New line.3F_MT_71.C2/72.C2    bus1= bus71_C2.1.2.3       bus2= bus72_C2.1.2.3         Linecode=2AWG_50       length=35  units=m
+New line.3F_MT_72.C2/73.C2    bus1= bus72_C2.1.2.3       bus2= bus73_C2.1.2.3         Linecode=2AWG_50       length=33  units=m
+New line.3F_MT_73.C2/74.C2    bus1= bus73_C2.1.2.3       bus2= bus74_C2.1.2.3         Linecode=2AWG_50       length=34  units=m
+New line.3F_MT_74.C2/75.C2    bus1= bus74_C2.1.2.3       bus2= bus75_C2.1.2.3         Linecode=2AWG_50       length=33  units=m
+New line.3F_MT_75.C2/76.C2    bus1= bus75_C2.1.2.3       bus2= bus76_C2.1.2.3         Linecode=2AWG_50       length=32  units=m
+New line.3F_MT_76.C2/77.C2    bus1= bus76_C2.1.2.3       bus2= bus77_C2.1.2.3         Linecode=2AWG_50       length=30  units=m
+ 
+  
+!O BARRAMENTO 77 ALIMENTA A ESTAÇÃO METEOROLÓGICA
+ 
+!NÃO TEMOS AS MEDIÇÕES DA ESTAÇÃO METEOROLÓGICA, DESTE MODO NÃO FOI
+!POSSÍVEL REALIZAR SUA MODELAGEM
+ 
+!TRAFO DA ESTAÇÃO METEOROLÓGICA
+New transformer.Trafo3F_METEOROLOGIA    phases=3      windings=2        buses=[bus77_C2.1.2.3  busCarga_METEOROLOGIA.1.2.3]      conns=[delta   wye]      KVs=[6.6   0.22]      KVAs=[45  45]
+ 
+ 
+!DEFININDO AS LINHAS DE MT AÉREAS DO CIRCUITO 2
+New line.3F_MT_77.C2/78.C2    bus1= bus77_C2.1.2.3       bus2= bus78_C2.1.2.3         Linecode=2AWG_50       length=33  units=m
+ 
+ 
+ 
+!DEFININDO AS LINHAS DE MT AÉREAS DO CIRCUITO 2
+New line.3F_MT_68.C2/79.C2    bus1= bus68_C2.1.2.3       bus2= bus79_C2.1.2.3         Linecode=2AWG_50       length=30  units=m
+New line.3F_MT_79.C2/80.C2    bus1= bus79_C2.1.2.3       bus2= bus80_C2.1.2.3         Linecode=2AWG_50       length=30  units=m
+New line.3F_MT_80.C2/81.C2    bus1= bus80_C2.1.2.3       bus2= bus81_C2.1.2.3         Linecode=2AWG_50       length=30  units=m
+New line.3F_MT_81.C2/82.C2    bus1= bus81_C2.1.2.3       bus2= bus82_C2.1.2.3         Linecode=2AWG_50       length=30  units=m
+New line.3F_MT_82.C2/83.C2    bus1= bus82_C2.1.2.3       bus2= bus83_C2.1.2.3         Linecode=2AWG_50       length=25  units=m
+New line.3F_MT_83.C2/84.C2    bus1= bus83_C2.1.2.3       bus2= bus84_C2.1.2.3         Linecode=2AWG_50       length=25  units=m
+New line.3F_MT_84.C2/85.C2    bus1= bus84_C2.1.2.3       bus2= bus85_C2.1.2.3         Linecode=2AWG_50       length=25  units=m
+New line.3F_MT_85.C2/86.C2    bus1= bus85_C2.1.2.3       bus2= bus86_C2.1.2.3         Linecode=2AWG_50       length=25  units=m
+New line.3F_MT_86.C2/87.C2    bus1= bus86_C2.1.2.3       bus2= bus87_C2.1.2.3         Linecode=2AWG_50       length=25  units=m
+New line.3F_MT_87.C2/88.C2    bus1= bus87_C2.1.2.3       bus2= bus88_C2.1.2.3         Linecode=2AWG_50       length=25  units=m
+New line.3F_MT_88.C2/89.C2    bus1= bus88_C2.1.2.3       bus2= bus89_C2.1.2.3         Linecode=2AWG_50       length=30  units=m
+New line.3F_MT_89.C2/90.C2    bus1= bus89_C2.1.2.3       bus2= bus90_C2.1.2.3         Linecode=2AWG_50       length=50  units=m
+New line.3F_MT_90.C2/91.C2    bus1= bus90_C2.1.2.3       bus2= bus91_C2.1.2.3         Linecode=2AWG_50       length=148 units=m
+ 
+ 
+!O BARRAMENTO 91 ALIMENTA O ICH
+ 
+!LINHA SUBTERRÂNEA DO ICH
+New line.3F_MT_91.C2/Trafo_3F_ICH     bus1= bus91_C2.1.2.3         bus2= Sourcebus_ICH.1.2.3        Linecode = 2AWG_35        length=100  units=m 
+!TRAFO DO ICH
+New transformer.Trafo3F_ICH    phases=3      windings=2        buses=[Sourcebus_ICH.1.2.3  Secundario_ICH.1.2.3]      conns=[delta   wye]      KVs=[6.6   0.22]      KVAs=[225  225] 
+
+ 
+ 
+!LINHA ENTRE O TRAFO DO ICH E A CARGA
+New line.3F_BT_Trafo3F_ICH/Carga_ICH   bus1= Secundario_ICH.1.2.3        bus2=busCarga_ICH.1.2.3       Linecode=2AWG_50       length=0.0001    units=m
+ 
+ 
+ 
+!DEFININDO AS LINHAS DE MT AÉREAS DO CIRCUITO 2
+New line.3F_MT_91.C2/92.C2    bus1= bus91_C2.1.2.3       bus2= bus92_C2.1.2.3         Linecode=2AWG_50       length=45  units=m
+New line.3F_MT_92.C2/93.C2    bus1= bus92_C2.1.2.3       bus2= bus93_C2.1.2.3         Linecode=2AWG_50       length=28  units=m
+New line.3F_MT_93.C2/94.C2    bus1= bus93_C2.1.2.3       bus2= bus94_C2.1.2.3         Linecode=2AWG_50       length=20  units=m
+ 
+ 
+ 
+!O BARRAMENTO 94 ALIMENTA SERVIÇOS SOCIAIS E PLANETÁRIO
+ 
+ 
+!TRAFO DO SERVIÇOS SOCIAIS (SERVICOS)
+New transformer.Trafo3F_SERVICOS    phases=3      windings=2        buses=[bus94_C2.1.2.3  Secundario_SSOCIAL.1.2.3]      conns=[delta   wye]      KVs=[6.6   0.22]      KVAs=[225  225]
+
+ 
+ 
+!LINHA ENTRE O TRAFO DO SSOCIAL E A CARGA
+New line.3F_BT_Trafo3F_SSOCIAL/Carga_SSOCIAL   bus1= Secundario_SSOCIAL.1.2.3        bus2=busCarga_SERVICOS.1.2.3       Linecode=2AWG_50       length=0.0001    units=m
+ 
+ 
+ 
+!LINHA SUBTERRÂNEA DO PLANETÁRIO
+New line.3F_MT_94.C2/Trafo_3F_PLANETARIO     bus1= bus94_C2.1.2.3         bus2= Sourcebus_PLANETARIO.1.2.3        Linecode = 2AWG_50        length=175  units=m
+!TRAFO DO PLANETÁRIO
+New transformer.Trafo3F_PLANETARIO    phases=3      windings=2        buses=[Sourcebus_PLANETARIO.1.2.3  Secundario_PLANETARIO.1.2.3]      conns=[delta   wye]      KVs=[6.6   0.22]      KVAs=[500  500]
+
+ 
+ 
+!LINHA ENTRE O TRAFO DO PLANETARIO E A CARGA
+New line.3F_BT_Trafo3F_PLANETARIO/Carga_PLANETARIO   bus1= Secundario_PLANETARIO.1.2.3        bus2=busCarga_PLANETARIO.1.2.3       Linecode=2AWG_50       length=0.0001    units=m
+ 
+ 
+ 
+!DEFININDO AS LINHAS DE MT AÉREAS DO CIRCUITO 2
+New line.3F_MT_92.C2/95.C2    bus1= bus92_C2.1.2.3       bus2= bus95_C2.1.2.3         Linecode=2AWG_50       length=90  units=m
+New line.3F_MT_95.C2/96.C2    bus1= bus95_C2.1.2.3       bus2= bus96_C2.1.2.3         Linecode=2AWG_50       length=33  units=m
+New line.3F_MT_96.C2/97.C2    bus1= bus96_C2.1.2.3       bus2= bus97_C2.1.2.3         Linecode=2AWG_50       length=28  units=m
+New line.3F_MT_97.C2/98.C2    bus1= bus97_C2.1.2.3       bus2= bus98_C2.1.2.3         Linecode=2AWG_50       length=32  units=m
+New line.3F_MT_98.C2/99.C2    bus1= bus98_C2.1.2.3       bus2= bus99_C2.1.2.3         Linecode=2AWG_50       length=28  units=m
+ 
+ 
+ 
+ 
+!O BARRAMENTO 99 ALIMENTA A ILUMINAÇÃO PÚBLICA
+ 
+ 
+!PARA MODELAGEM DA CARGA DA ILUMINAÇÃO PÚBLICA FORAM USADOS DADOS DO LEVANTAMENTO ENERGÉTICO FEITO PELA ARION EM 2018 NA UFJF.
+!TRAFO DA ILUMINAÇÃO PÚBLICA
+New transformer.Trafo3F_ILUMINACAO    phases=3      windings=2        buses=[bus99_C2.1.2.3  busCarga_ILUMINACAO.1.2.3]      conns=[delta   wye]      KVs=[6.6   0.22]      KVAs=[225  225]
+
+ 
+ 
+ 
+!DEFININDO AS LINHAS DE MT AÉREAS DO CIRCUITO 2
+New line.3F_MT_99.C2/100.C2    bus1= bus99_C2.1.2.3       bus2= bus100_C2.1.2.3         Linecode=2AWG_50       length=28  units=m
+New line.3F_MT_100.C2/101.C2   bus1= bus100_C2.1.2.3      bus2= bus101_C2.1.2.3         Linecode=2AWG_50       length=30  units=m
+New line.3F_MT_101.C2/102.C2   bus1= bus101_C2.1.2.3      bus2= bus102_C2.1.2.3         Linecode=2AWG_50       length=20  units=m
+New line.3F_MT_102.C2/103.C2   bus1= bus102_C2.1.2.3      bus2= bus103_C2.1.2.3         Linecode=2AWG_50       length=65  units=m
+New line.3F_MT_103.C2/104.C2   bus1= bus103_C2.1.2.3      bus2= bus104_C2.1.2.3         Linecode=2AWG_50       length=65  units=m
+New line.3F_MT_104.C2/105.C2   bus1= bus104_C2.1.2.3      bus2= bus105_C2.1.2.3         Linecode=2AWG_50       length=3   units=m
+ 
+ 
+ 
+!O BARRAMENTO 104 ALIMENTA A ECONOMIA
+ 
+!TRAFO DA ECONOMIA
+New transformer.Trafo3F_ECONOMIA    phases=3      windings=2        buses=[bus104_C2.1.2.3  busCarga_ECONOMIA.1.2.3]      conns=[delta   wye]      KVs=[6.6   0.22]      KVAs=[225  225]
+
+ 
+ 
+!DEFININDO AS LINHAS DE MT AÉREAS DO CIRCUITO 2
+New line.3F_MT_100.C2/106.C2   bus1= bus100_C2.1.2.3      bus2= bus106_C2.1.2.3         Linecode=2AWG_50       length=27  units=m
+New line.3F_MT_106.C2/107.C2   bus1= bus106_C2.1.2.3      bus2= bus107_C2.1.2.3         Linecode=2AWG_50       length=25  units=m
+New line.3F_MT_107.C2/108.C2   bus1= bus107_C2.1.2.3      bus2= bus108_C2.1.2.3         Linecode=2AWG_50       length=29  units=m
+New line.3F_MT_108.C2/109.C2   bus1= bus108_C2.1.2.3      bus2= bus109_C2.1.2.3         Linecode=2AWG_50       length=38  units=m
+New line.3F_MT_109.C2/110.C2   bus1= bus109_C2.1.2.3      bus2= bus110_C2.1.2.3         Linecode=2AWG_50       length=20  units=m
+New line.3F_MT_110.C2/111.C2   bus1= bus110_C2.1.2.3      bus2= bus111_C2.1.2.3         Linecode=2AWG_50       length=41  units=m
+New line.3F_MT_111.C2/112.C2   bus1= bus111_C2.1.2.3      bus2= bus112_C2.1.2.3         Linecode=2AWG_50       length=41  units=m
+New line.3F_MT_112.C2/113.C2   bus1= bus112_C2.1.2.3      bus2= bus113_C2.1.2.3         Linecode=2AWG_50       length=42  units=m
+ 
+ 
+!O BARRAMENTO 113 ALIMENTA A ODONTOLOGIA 
+ 
+!LINHA SUBTERRÂNEA DA ODONTOLOGIA
+New line.3F_MT_113.C2/Trafo_3F_ODONTOLOGIA     bus1= bus113_C2.1.2.3         bus2= Sourcebus_ODONTOLOGIA.1.2.3        Linecode = 2AWG_50        length=14  units=m
+!TRAFO DA ODONTOLOGIA
+New transformer.Trafo3F_ODONTOLOGIA    phases=3      windings=2        buses=[Sourcebus_ODONTOLOGIA.1.2.3  Secundario_ODONTO.1.2.3]      conns=[delta   wye]      KVs=[6.6   0.22]      KVAs=[500  500]
+
+ 
+ 
+!LINHA ENTRE O TRAFO DO ODONTO E A CARGA
+New line.3F_BT_Trafo3F_ODONTO/Carga_ODONTO   bus1= Secundario_ODONTO.1.2.3        bus2=busCarga_ODONTOLOGIA.1.2.3       Linecode=2AWG_50       length=0.0001    units=m
+ 
+ 
+!DEFININDO AS LINHAS DE MT AÉREAS DO CIRCUITO 2
+New line.3F_MT_109.C2/114.C2   bus1= bus109_C2.1.2.3      bus2= bus114_C2.1.2.3         Linecode=2AWG_50       length=25  units=m
+New line.3F_MT_114.C2/115.C2   bus1= bus114_C2.1.2.3      bus2= bus115_C2.1.2.3         Linecode=2AWG_50       length=15  units=m
+ 
+ 
+ 
+!O BARRAMENTO 115 ALIMENTA A FACULDADE DE COMUNICAÇÃO
+ 
+!TRAFO DA FACULDADE DE COMUNICAÇÃO
+New transformer.Trafo3F_COMUNICACAO    phases=3      windings=2        buses=[bus115_C2.1.2.3  busCarga_COMUNICACAO.1.2.3]      conns=[delta   wye]      KVs=[6.6   0.22]      KVAs=[45  45]
+ 
+ 
+ 
+ 
+!DEFININDO AS LINHAS DE MT AÉREAS DO CIRCUITO 2
+New line.3F_MT_115.C2/116.C2   bus1= bus115_C2.1.2.3      bus2= bus116_C2.1.2.3         Linecode=2AWG_50       length=25  units=m
+New line.3F_MT_116.C2/117.C2   bus1= bus116_C2.1.2.3      bus2= bus117_C2.1.2.3         Linecode=2AWG_50       length=32  units=m
+New line.3F_MT_117.C2/118.C2   bus1= bus117_C2.1.2.3      bus2= bus118_C2.1.2.3         Linecode=2AWG_50       length=30  units=m
+New line.3F_MT_118.C2/119.C2   bus1= bus118_C2.1.2.3      bus2= bus119_C2.1.2.3         Linecode=2AWG_50       length=70  units=m
+New line.3F_MT_119.C2/120.C2   bus1= bus119_C2.1.2.3      bus2= bus120_C2.1.2.3         Linecode=2AWG_50       length=50  units=m
+New line.3F_MT_120.C2/121.C2   bus1= bus120_C2.1.2.3      bus2= bus121_C2.1.2.3         Linecode=2AWG_50       length=50  units=m
+New line.3F_MT_121.C2/122.C2   bus1= bus121_C2.1.2.3      bus2= bus122_C2.1.2.3         Linecode=2AWG_50       length=50  units=m
+New line.3F_MT_122.C2/123.C2   bus1= bus122_C2.1.2.3      bus2= bus123_C2.1.2.3         Linecode=2AWG_50       length=42  units=m
+New line.3F_MT_123.C2/124.C2   bus1= bus123_C2.1.2.3      bus2= bus124_C2.1.2.3         Linecode=2AWG_50       length=28  units=m
+New line.3F_MT_124.C2/125.C2   bus1= bus124_C2.1.2.3      bus2= bus125_C2.1.2.3         Linecode=2AWG_50       length=36  units=m
+New line.3F_MT_125.C2/126.C2   bus1= bus125_C2.1.2.3      bus2= bus126_C2.1.2.3         Linecode=2AWG_50       length=50  units=m
+New line.3F_MT_126.C2/127.C2   bus1= bus126_C2.1.2.3      bus2= bus127_C2.1.2.3         Linecode=2AWG_50       length=45  units=m
+New line.3F_MT_127.C2/128.C2   bus1= bus127_C2.1.2.3      bus2= bus128_C2.1.2.3         Linecode=2AWG_50       length=2   units=m
+ 
+ 
+ 
+!O BARRAMENTO 127 ALIMENTA O CORPO DE BOMBEIROS
+ 
+!TRAFO DO CORPO DE BOMBEIROS
+New transformer.Trafo3F_BOMBEIROS    phases=3      windings=2        buses=[bus127_C2.1.2.3  busCarga_BOMBEIROS.1.2.3]      conns=[delta   wye]      KVs=[6.6   0.22]      KVAs=[150  150]
+
+ 
+ 
+ 
+!A LINHA DE BAIXA TENSÃO QUE ALIMENTA A GUARITA DO PORTÃO SUL É BIFÁSICA E USA CONDUTORES DE 35mm^2.
+ 
+!DEFININDO AS LINHAS DE BT AÉREAS DO CIRCUITO 2 (LINHA QUE ALIMENTA A GUARITA DO PORTÃO SUL)
+New line.2F_BT_Trafo3F_BOMBEIROS/126.C2_BT   bus1= busCarga_BOMBEIROS.1.2      bus2= bus126_C2_BT.1.2         Linecode=2AWG_35       length=45  units=m
+New line.2F_BT_126.C2_BT/129.C2_BT           bus1= bus126_C2_BT.1.2            bus2= bus129_C2_BT.1.2         Linecode=2AWG_35       length=36  units=m
+New line.2F_BT_129.C2_BT/130.C2_BT           bus1= bus129_C2_BT.1.2            bus2= bus130_C2_BT.1.2         Linecode=2AWG_35       length=25  units=m
+New line.2F_BT_130.C2_BT/131.C2_BT           bus1= bus130_C2_BT.1.2            bus2= bus131_C2_BT.1.2         Linecode=2AWG_35       length=30  units=m
+New line.2F_BT_131.C2_BT/132.C2_BT           bus1= bus131_C2_BT.1.2            bus2= bus132_C2_BT.1.2         Linecode=2AWG_35       length=30  units=m
+New line.2F_BT_132.C2_BT/133.C2_BT           bus1= bus132_C2_BT.1.2            bus2= bus133_C2_BT.1.2         Linecode=2AWG_35       length=20  units=m
+ 
+ 
+!LINHA SUBTERRÂNEA DA GUARITA
+New line.2F_BT_133.C2_BT/GUARITA     bus1= bus133_C2_BT.1.2         bus2= busCarga_GUARITA.1.2        Linecode = 2AWG_35        length=40  units=m
+ 
+ 
+ 
+!----------------------------------------------------------------------------------
+!-------------------------------- CIRCUITO 3 ------------------------------
+!----------------------------------------------------------------------------------
+ 
+!O CIRCUITO 3 ALIMENTA APENAS A BIBLIOTECA CENTRAL E A REITORIA
+ 
+
+
+
