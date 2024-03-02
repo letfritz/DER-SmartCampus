@@ -32,11 +32,15 @@ Pareto Frontier with objective function 1 on the 𝑥-axis and objective functio
 
 
 ## Installation
-1. Download the package to a local folder (e.g. ~/DER-SmartCampus/) by running:
+1. Install the `py_dss_interface`
+   ```
+   pip install py-dss-interface
+   ```
+3. Download the package to a local folder (e.g. ~/DER-SmartCampus/) by running:
   ```
     git clone https://github.com/letfritz/DER-SmartCampus.git
   ```
-2. Run Python IDE and navigate to the folder (~/DER-SmartCampus/), then run the main.py script.
+3. Run Python IDE and navigate to the folder (~/DER-SmartCampus/), then run the main.py script.
 
 ## Usage
 
@@ -49,7 +53,7 @@ Released under MIT license.
 
 ## DER-SmartCampus Folder Contents
 1. Folders
-
+  
 2. Files
     
 
