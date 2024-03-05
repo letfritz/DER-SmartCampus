@@ -1,4 +1,5 @@
-# Optimal siting and sizing of distributed energy resources in a Smart Campus <img src="https://skillicons.dev/icons?i=python" />
+# Optimal siting and sizing of distributed energy resources in a Smart Campus <img src="https://skillicons.dev/icons?i=python" /> <img src="https://github.com/letfritz/DER-SmartCampus/assets/161434060/4696e7f4-d998-4032-8fb5-ad344b01b02e" style="max-width: 50%; height: 50px;">
+
 <div align="center"><br/>
   <div style="display: inline-block;">
     <img align="center" alt="stars" src="https://img.shields.io/github/stars/letfritz/DER-SmartCampus">
