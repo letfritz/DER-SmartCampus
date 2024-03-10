@@ -2,9 +2,9 @@
 
 <div align="center"><br/>
   <div style="display: inline-block;">
-    <img align="center" alt="stars" src="https://img.shields.io/github/stars/letfritz/DER-SmartCampus">
-    <img align="center" alt="watchers" src="https://img.shields.io/github/watchers/letfritz/DER-SmartCampus">
-    <img align="center" alt="forks" src="https://img.shields.io/github/forks/letfritz/DER-SmartCampus">
+    <img align="center" alt="stars" src="https://img.shields.io/github/stars/letfritz/DER-SmartCampus.svg">
+    <img align="center" alt="watchers" src="https://img.shields.io/github/watchers/letfritz/DER-SmartCampus.svg">
+    <img align="center" alt="forks" src="https://img.shields.io/github/forks/letfritz/DER-SmartCampus.svg">
   </div>
   <div style="display: inline-block;">
     <img align="center" alt="downloads" src="https://img.shields.io/github/downloads/letfritz/DER-SmartCampus/total.svg">
